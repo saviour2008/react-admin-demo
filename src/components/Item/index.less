@@ -1,0 +1,29 @@
+.container {
+    &:last-child {
+        border-bottom: none;
+    }
+    border-bottom: 1px solid #eee;
+    padding: 10px 20px 10px 20px;
+    .mr10 {
+        margin-right: 10px;
+    }
+
+    .title {
+        font-size: 20px;
+        font-weight: bolder;
+        color: #000;
+    }
+    .content {
+        display: flex;
+        .pic {
+            flex: 1;
+        }
+        .text {
+            height: 68px;
+            display: -webkit-box;
+            overflow: hidden;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+    }
+}
