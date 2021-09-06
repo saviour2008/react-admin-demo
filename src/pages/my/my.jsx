@@ -2,10 +2,15 @@ import React, { Component } from 'react';
 import Header from '../../components/Header/index';
 import './my.less';
 import axios from 'axios';
-import { Avatar } from 'antd';
-import { Divider } from 'antd';
-import { message } from 'antd';
-export default class My extends Component {
+import { Avatar, Row, Col, Divider, message } from 'antd';
+import { HeartTwoTone } from '@ant-design/icons';
+import { increment } from '../../redux/actions/userInfo';
+import { connect } from 'react-redux';
+class My extends Component {
+    heartIcon = React.createRef();
+    state = {
+        good: 0,
+    };
     componentWillMount() {
         axios.get('http://localhost:3000/api/user').then(
             (response) => {
@@ -21,6 +26,17 @@ export default class My extends Component {
             }
         );
     }
+    addClickMount = () => {
+        console.log(this.heartIcon);
+        this.heartIcon.current.className = 'animation';
+        this.heartIcon.current.addEventListener('animationend', () => {
+            this.heartIcon.current.className = '';
+        });
+        // this.setState((state) => {
+        //     return { good: state.good + 1 };
+        // });
+        this.props.increment(1);
+    };
     render() {
         let title = '我的';
         return (
@@ -32,11 +48,32 @@ export default class My extends Component {
                             size={80}
                             src='https://img01.yzcdn.cn/vant/cat.jpeg'
                         />
+                        <div className='name'>
+                            <div>Hello Kitty</div>
+                            <div>{this.props.userInfo}</div>
+                        </div>
+                        <HeartTwoTone
+                            className='heart'
+                            ref={this.heartIcon}
+                            twoToneColor='#eb2f96'
+                            onClick={this.addClickMount}
+                        />
+                        {/* <HeartOutlined
+                            className=''
+                            onClick={this.addClickMount}
+                        /> */}
                     </div>
-
-                    <Divider />
                 </div>
             </div>
         );
     }
 }
+
+export default connect(
+    (state) => ({
+        userInfo: state.userInfo,
+    }),
+    {
+        increment,
+    }
+)(My);
